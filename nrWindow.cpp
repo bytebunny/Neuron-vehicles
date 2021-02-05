@@ -483,20 +483,19 @@ NRWindow::NRWindow(GlutMaster * glutMaster,
                        int setWidth, int setHeight,
                        int setInitPositionX, int setInitPositionY,
                        char * title){
-  
+
   width  = setWidth;               
   height = setHeight;
-  
+
   initPositionX = setInitPositionX;
   initPositionY = setInitPositionY;
   
   glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
   glutInitWindowSize(width, height);
   glutInitWindowPosition(initPositionX, initPositionY);
-  glViewport(0, 0, width, height);   // This may have to be moved to after the next line on some platforms
-
+  //glViewport(0, 0, width, height);   // This may have to be moved to after the next line on some platforms
   glutMaster->CallGlutCreateWindow(title, this);
-  
+  glViewport(0, 0, width, height); // This may have to be moved to BEFORE the previous line on som platforms.
    //   Set_lights();
   glEnable(GL_DEPTH_TEST);
 
@@ -530,7 +529,6 @@ NRWindow::NRWindow(GlutMaster * glutMaster,
   // glutAddMenuEntry("Shadows", SHADOW);
   glutAddMenuEntry("Quit", QUIT);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
-
 }
 
 NRWindow::~NRWindow(){

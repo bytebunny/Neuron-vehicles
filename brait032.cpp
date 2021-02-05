@@ -861,13 +861,13 @@ int main(int argc, char *argv[]){
   
   //  dographicsstuff();
   char windowtitle[]="Neuro robots";
-   glutMaster   = new GlutMaster();    
+
+   glutMaster   = new GlutMaster();
 
    Window = new NRWindow(glutMaster,
-			       viewwidth, viewheight,    // width, height
-			       10, 0,    // initPosition (x,y)
-			       windowtitle); // title
-   
+    		             viewwidth, viewheight,    // width, height
+    		             10, 0,    // initPosition (x,y)
+    		             windowtitle); // title
 
    glutMaster->CallGlutMainLoop();
 
