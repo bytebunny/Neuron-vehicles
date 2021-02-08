@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# ...but these files:
+!*.cpp
+!*.h
+!*.gitignore
+!*.md
+!*.ini
+
+# ...even if they are in subdirectories
+!*/
