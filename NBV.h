@@ -10,9 +10,11 @@ Contains, classess for things, eyes, and binoculus. Monoculus dropped for the mo
 
 #ifndef BRAITVEHICLE_H
 #define BRAITVEHICLE_H
+
 #include <iostream>
 #include <sstream>
 #include <list>		// list class library
+#include <string>
 #include "coordmatrix.h"
 #include "bvglobalini.h"
 #include "constants.hpp"
@@ -489,5 +491,7 @@ public:
   }
 };
 
-#endif
 
+void writevehiclelogs( std::string fname, char var, int lnum );
+
+#endif

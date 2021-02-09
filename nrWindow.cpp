@@ -7,19 +7,14 @@
 #include "vehicle_types.hpp"
 #include "nrWindow.h"
 #include "bvglobalini.h"
+#include "NBV.h"
 
-
-//using namespace std;
-//using std::ifstream;
-//using std::ofstream;
-//using std::ios;
 using std::cout;
 using std::endl;
 using std::string;
 
 void Set_lights();
 void Draw_lights();
-void writevehiclelogs(string fname,char var,int lnum);
 
 GLfloat light0_position[] ={1.0, -0.1, 2.0, 0.0};
 GLfloat light1_position[] ={-1.0, 0.0, 2.0, 0.0};
@@ -51,8 +46,7 @@ bool showtitles=true;
 
 //-------------------------------------------------
 
-void
-showMessage(GLfloat x, GLfloat y, GLfloat z, string & message)
+void showMessage( GLfloat x, GLfloat y, GLfloat z, string& message )
 {
   glPushMatrix();
   glDisable(GL_LIGHTING);
@@ -172,8 +166,7 @@ GLfloat wheat[]={245, 222, 179};
 GLfloat chocolate[]={210, 105, 30};
 
 /// Draw Object selector (i.e. a sphere to show which vehicle has been selected)
-void
-drawObjectSelector(float x,float y)
+void drawObjectSelector( float x,float y )
 {
 //  bool haslight=true;
   
@@ -192,8 +185,7 @@ drawObjectSelector(float x,float y)
 
 
 // Draw Fixed light
-void
-drawFixedLight(float x,float y)
+void drawFixedLight(float x,float y)
 {
   glPushMatrix();
     glTranslatef(x,y,0);

@@ -4,10 +4,10 @@
 namespace config
 {
     // inline constexpr requires C++17
-    inline constexpr char project_name[] { "@PROJECT_NAME@" }; // populated by CMake.
-    inline constexpr char project_version[] { "@PROJECT_VERSION@" };
-    inline constexpr char project_version_major[] { "@PROJECT_VERSION_MAJOR@" };
-    inline constexpr char project_version_minor[] { "@PROJECT_VERSION_MINOR@" };
+    inline constexpr auto project_name { "@PROJECT_NAME@" }; // char[] populated by CMake.
+    inline constexpr auto project_version { "@PROJECT_VERSION@" };
+    inline constexpr auto project_version_major { "@PROJECT_VERSION_MAJOR@" };
+    inline constexpr auto project_version_minor { "@PROJECT_VERSION_MINOR@" };
 }
 
 #endif // CONFIG_H

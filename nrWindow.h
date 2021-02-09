@@ -18,15 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "glutMaster.h"
-#include "glutWindow.h"
-
 #ifndef NRWINDOW_H
 #define NRWINDOW_H
 
 /**
 @author William Harwin
 */
+
+#include<string>
+#include "glutMaster.h"
+#include "glutWindow.h"
 
 //-----------------------------------------------------------
 class NRWindow : public GlutWindow{
@@ -51,5 +52,17 @@ public:
   void StartMoving(GlutMaster * glutMaster);
   void StopMoving(GlutMaster * glutMaster);
 };
+
+
+//------------------------------ declare drawing routines -----------------------------------------
+
+void drawRobot( float x, float y, float theta, float eyeangle, int eyeconeang, std::string & title, int flag );
+void drawRobot( float x, float y, float theta, float eyeangle, float robotlengthA, float robothalfwidth,
+                float eyeposx, int eyeconeang, std::string & title, int flag );
+void drawFixedLight( float x, float y );
+void drawFloor();
+void drawObjectSelector( float x, float y );
+
+void showMessage( GLfloat x, GLfloat y, GLfloat z, std::string & message );
 
 #endif

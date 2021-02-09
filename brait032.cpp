@@ -110,15 +110,6 @@ using std::list;
 using std::ofstream;
 using std::string;
 
-//void drawRobot(float x,float y,float theta,float eyeangle,int eyeconeang, char * title, int flag);
-void drawRobot(float x,float y,float theta,float eyeangle,int eyeconeang, string & title, int flag);
-void drawRobot(float x,float y,float theta,float eyeangle,float robotlengthA,float robothalfwidth,float eyeposx, int eyeconeang,string & title, int flag);
-void drawFixedLight(float x,float y);
-void drawFloor();
-//void drawLights();
-void drawObjectSelector(float x,float y);
-void showMessage(GLfloat x, GLfloat y, GLfloat z, char *message);
-void writevehiclelogs(string  fname,char  var,int  lnum);
 void makealight();
 void makeashyseeker();
 void makeashyphobe();
@@ -752,38 +743,6 @@ void worldphysics(Binoculus &nbv){
   else
     boundarycollisions(nbv);
 }
-
-/// Write out the logs for all the vehicles to a matlab/octave file
-/// Candidate for a friend function to binoculus, writelog(name,var,lognum)
-void writevehiclelogs(string fname,char var,int lnum){
-  list<Binoculus>::iterator iter;
-
-  std::ofstream sfid(fname.c_str(), ios::out | ios::binary);
-
-  if(GS.logging){
-  if (sfid.fail()){
-    cout<<"Could not save file "+fname<<endl;
-  }else{
-    for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++) {
-      //-char buffer2[100];
-      //-sprintf(buffer2,"V%c%d",var,(*iter).getid());
-      std::ostringstream Convert;
-      Convert << "V"<<var<<(*iter).getid();
-      std::string buffer2= Convert.str();
-      //cout << buffer2<<endl;
-      if (lnum==2)
-	(*iter).log2.writematlabv4(sfid,buffer2);
-      else
-	(*iter).log.writematlabv4(sfid,buffer2);
-      cout <<"Writing log "<<lnum<<" for "<<(*iter).name <<endl;
-    }
-    sfid.close();
-  }
-  }else{// not logging
-    cout << "Please set logging on in bv.ini"<<endl;
-  }
-}
-
 
 
 //---------------------------------------------------------------
