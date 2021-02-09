@@ -83,9 +83,8 @@ way of doing things, please advise - or better still please implement.
 Learning/optimization
 */
 
-#include <config.hpp>
-
-
+#include"config.hpp"
+#include"constants.hpp"
 
 //#include <algorithm>    // std::remove_if
 #include <fstream>
@@ -99,11 +98,6 @@ Learning/optimization
 #include "NBV.h"  // the vehicle class
 #include "bvglobalini.h" // for initialising variables from bv.ini
 #include "nrWindow.h"
-
-#ifndef M_PI
-#define M_PI 3.1415926535897932
-#endif
-
 
 //using namespace std;
 using std::cout;
@@ -253,7 +247,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       if (xx<-GS.worldboundary)xx=-GS.worldboundary;
       if (yy>GS.worldboundary)yy=GS.worldboundary;
       if (yy<-GS.worldboundary)yy=-GS.worldboundary;
-      Binoculus newvehicle("A",-3*M_PI/4,xx,yy,GREEN); 
+      Binoculus newvehicle("A",-3* constants::pi /4,xx,yy,GREEN);
       //newbeast.change(FIXEDLIGHT);
       //newbeast.settheta();
       globalBvl.push_back (newvehicle);
@@ -447,7 +441,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=AGGRESSLIGHTPHOBE;
 	(*globalNVselect).name="Aggressive Phobe";
-	(*globalNVselect).setEyeDivergence(GS.AggressPhobe.at(6)*M_PI/180,0,0);
+	(*globalNVselect).setEyeDivergence(GS.AggressPhobe.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(BLUE);
 	cout <<"found AP"<<endl;
 	globalkbuf.clear();
@@ -456,7 +450,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=SHYLIGHTSEEKER;
 	(*globalNVselect).name="Shy Seeker";
-	(*globalNVselect).setEyeDivergence(GS.ShySeeker.at(6)*M_PI/180,.5,.15);
+	(*globalNVselect).setEyeDivergence(GS.ShySeeker.at(6)*constants::pi/180,.5,.15);
 	(*globalNVselect).setcolour(BLUE);
 	//makeashyseeker();
 	cout <<"found SS"<<endl;
@@ -466,7 +460,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=SHYLIGHTPHOBE;
 	(*globalNVselect).name="Shy Phobe";
-	(*globalNVselect).setEyeDivergence(GS.ShyPhobe.at(6)*M_PI/180,0,0);
+	(*globalNVselect).setEyeDivergence(GS.ShyPhobe.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(BLUE);
 	cout <<"found SP"<<endl;
 	globalkbuf.clear();
@@ -475,7 +469,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=AGGRESSLIGHTSEEKER;
 	(*globalNVselect).name="Aggressive Seeker";
-	(*globalNVselect).setEyeDivergence(GS.AggressSeeker.at(6)*M_PI/180,0,0);
+	(*globalNVselect).setEyeDivergence(GS.AggressSeeker.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(RED);
 	cout <<"found DP"<<endl;
 	globalkbuf.clear();
@@ -497,7 +491,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=PREY;
 	(*globalNVselect).name="Dumb Prey";
-	(*globalNVselect).setEyeDivergence(GS.Prey.at(6)*M_PI/180,0.5,0.15);
+	(*globalNVselect).setEyeDivergence(GS.Prey.at(6)*constants::pi/180,0.5,0.15);
 	(*globalNVselect).setcolour(BLUE);
 	cout <<"found DP"<<endl;
 	globalkbuf.clear();
@@ -506,7 +500,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=BRIGHTPREY;
 	(*globalNVselect).name="Bright Prey";
-	(*globalNVselect).setEyeDivergence(GS.BrightPrey.at(6)*M_PI/180,0.5,0.15);
+	(*globalNVselect).setEyeDivergence(GS.BrightPrey.at(6)*constants::pi/180,0.5,0.15);
 	(*globalNVselect).setcolour(BLUE);
 	cout <<"found BP"<<endl;
 	globalkbuf.clear();
@@ -515,7 +509,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=PREDATOR;
 	(*globalNVselect).name="Predator";
-	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*M_PI/180,0,0);
+	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(RED);
 	cout <<"found PR"<<endl;
 	globalkbuf.clear();
@@ -526,11 +520,11 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=SPECULATRIX;
 	(*globalNVselect).name="M.Speculatrix";
-	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*M_PI/180,0,0);
+	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*constants::pi/180,0,0);
 	cout << "eye field set to "<<GS.Predator.at(6)<<"degrees"<<endl;
 	//(*globalNVselect).setcolour(RED);
 	(*globalNVselect).setcolour(GREEN);
-	(*globalNVselect).lefteye.inituniform(1,60*M_PI/180);
+	(*globalNVselect).lefteye.inituniform(1,60*constants::pi/180);
 
 	globalkbuf.clear();
       }
@@ -538,7 +532,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	(*globalNVselect).resetstates();
 	(*globalNVselect).vehicletype=TESTVEHICLE;
 	(*globalNVselect).name="Test Vehicle";
-	(*globalNVselect).setEyeDivergence(GS.TestVehicle.at(6)*M_PI/180,0,0);
+	(*globalNVselect).setEyeDivergence(GS.TestVehicle.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(BLUE);
 	cout <<"found TV"<<endl;
 	globalkbuf.clear();
@@ -576,7 +570,7 @@ void NRWindow::CallBackDisplayFunc(void){
 /// Teapot coordinate frame, x-axis out of spout , y-axis out of lid, z-axis to rightl
 
 
-//   drawRobot(1.5,1.0,1.0,90.0*M_PI/180.0,90,"test",1);
+//   drawRobot(1.5,1.0,1.0,90.0*constants::pi/180.0,90,"test",1);
 //   drawRobot(0,-2,0,0,230,NULL,3);
    drawFloor();
    //   drawLights();      
@@ -592,7 +586,7 @@ void NRWindow::CallBackDisplayFunc(void){
        drawFixedLight(xx,yy);
      }else{
        float eyediv=(*iter).getEyeDiv();
-       // should save this info in eyes... (*iter).getRetinaAngle()*180/M_PI; For now=60degrees
+       // should save this info in eyes... (*iter).getRetinaAngle()*180/constants::pi; For now=60degrees
 
        // this version uses vehicle dimensions .5,.3.6,drawRobot(xx,yy,th,eyediv,.5,.3,.6,60,(*iter).name,(*iter).vehicletype);
 
@@ -689,7 +683,7 @@ void makealight(){
 void makeashyseeker(){
   (*globalNVselect).vehicletype=SHYLIGHTSEEKER;
   (*globalNVselect).name="Shy Seeker";
-  (*globalNVselect).setEyeDivergence(GS.ShySeeker[4]*M_PI/180,0.4,0.1);
+  (*globalNVselect).setEyeDivergence(GS.ShySeeker[4]*constants::pi/180,0.4,0.1);
   (*globalNVselect).setMIBs(GS.ShySeeker[0],GS.ShySeeker[1],GS.ShySeeker[2],GS.ShySeeker[3]);// set the mass, inertia and damping
   //(*globalNVselect).setSSgains(GS.ShySeeker[5],GS.ShySeeker[6]);
   (*globalNVselect).setcolour(BLUE);
@@ -746,12 +740,12 @@ void boundarycollisions(Binoculus &nbv){
   float bwall=-GS.worldboundary;
    
  //left wall
-  if (nbv.x[3]>rwall && nbv.x[2] > -M_PI/2 && nbv.x[2] < M_PI/2){
-    nbv.x[2]=M_PI-nbv.x[2];
+  if (nbv.x[3]>rwall && nbv.x[2] > -constants::pi/2 && nbv.x[2] < constants::pi/2){
+    nbv.x[2]=constants::pi-nbv.x[2];
   }
   //right wall
-  if (nbv.x[3]<lwall && (nbv.x[2] > M_PI/2 || nbv.x[2] < -M_PI/2)){
-    nbv.x[2]=M_PI-nbv.x[2];
+  if (nbv.x[3]<lwall && (nbv.x[2] > constants::pi/2 || nbv.x[2] < -constants::pi/2)){
+    nbv.x[2]=constants::pi-nbv.x[2];
   }
 
   //top wall
@@ -821,8 +815,8 @@ int main(int argc, char *argv[]){
   // the "front" of the list, outputting it, and removing it
   // from the front of the list.
 
-  Binoculus Alice("Alice",-M_PI/4,0,0,GREEN);
-  //Binoculus SS("Shy Seeker",-M_PI/4,.56,-.52,OFF);
+  Binoculus Alice("Alice",-constants::pi/4,0,0,GREEN);
+  //Binoculus SS("Shy Seeker",-constants::pi/4,.56,-.52,OFF);
   Binoculus April("April",0.523599,-.85,-.85,GREEN); //30degrees
   //Binoculus George("George",-.78,-0.85,0.85,OFF);
 

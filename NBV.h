@@ -15,6 +15,8 @@ Contains, classess for things, eyes, and binoculus. Monoculus dropped for the mo
 #include <list>		// list class library
 #include "coordmatrix.h"
 #include "bvglobalini.h"
+#include "constants.hpp"
+
 using std::cout;
 using std::endl;
  
@@ -152,8 +154,8 @@ public:
       //if(a<-3.1);a=-3.1;
 
       if (P.getval(2,ii)!=1)cout << "warning check Pgetval"<<endl;
-      //cout <<"theta="<<theta*180/M_PI<<endl;
-      //cout <<"gamma="<<gamma*180/M_PI<<endl;
+      //cout <<"theta="<<theta*180/constants::pi<<endl;
+      //cout <<"gamma="<<gamma*180/constants::pi<<endl;
 
       for (int jj=0;jj<nreceptors;jj++){     
       //int jj=0;
@@ -223,7 +225,7 @@ public:
     :BluePR(6),Bleft(6),Bright(6),GreenPR(6),Gleft(6),Gright(6),RedPR(6),Rleft(6),Rright(6),Aeye(3,3){
     theta=ltheta;
     Aeye.trans(ltheta,0.0,0.0);
-    inituniform(1,60*M_PI/180);
+    inituniform(1,60*constants::pi/180);
   }
 };
 
@@ -284,7 +286,7 @@ public:
     // input is the photocell, outputs are steering rotation speed, and drive wheel speed
     float intensity=lefteye.GreenPR.at(0);
     float vs=GS.Speculatrix.at(2); //  constant forward velocity
-    lefteye.inituniform(1,GS.Speculatrix[6]*M_PI/180);
+    lefteye.inituniform(1,GS.Speculatrix[6]*constants::pi/180);
     //cout <<"intensity="<<intensity<<endl;
     if (intensity < GS.Speculatrix[0]){
       //lefteye.theta=lefteye.theta+GS.Speculatrix[1];
@@ -323,10 +325,10 @@ public:
 
     /// States =[ speed, \dot\theta,\theta, x, y ]
     // normalise theta (x[2]), allows easier checking of the orientation of the vehicle.
-    while (x[2] > M_PI)
-      x[2]=x[2]-2*M_PI;
-    while(x[2]< -M_PI)
-      x[2]=x[2]+2*M_PI;
+    while (x[2] > constants::pi)
+      x[2]=x[2]-2*constants::pi;
+    while(x[2]< -constants::pi)
+      x[2]=x[2]+2*constants::pi;
     float af=B/mass;float at=Brot/inertia;
 
     

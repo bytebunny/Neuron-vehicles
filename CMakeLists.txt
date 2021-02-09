@@ -7,8 +7,8 @@ endif()
 
 project( Neuron-vehicles VERSION 4.0 LANGUAGES CXX )
 
-configure_file( config.hpp.in config.hpp ) # puts config.h under ${CMAKE_CURRENT_BINARY_DIR}
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+configure_file( config.hpp.in config.hpp ) # puts config.h under ${CMAKE_CURRENT_BINARY_DIR}.
+include_directories(${CMAKE_CURRENT_BINARY_DIR}) # specify the output directory as an include directory.
 
 #------------------------------------ Dependencies ---------------------------------
 find_package( OpenGL REQUIRED COMPONENTS OpenGL )

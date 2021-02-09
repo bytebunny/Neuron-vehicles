@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cmath>
 
-//#include "glutMaster.h"
+#include "constants.hpp"
 #include "nrWindow.h"
 #include "bvglobalini.h"
 
@@ -92,7 +92,7 @@ static void init_wheel(int n, GLfloat radius, GLfloat width)
   if (n>=MAXWHPTS){  cout << "error " << __LINE__ <<endl ;exit(1);}
 
   for(i=0;i<n;i++){
-    ang=(i*2.0*M_PI)/((GLfloat)n);
+      ang=(i*2.0*constants::pi)/((GLfloat)n);
     Lwheel[i][0]=radius*sin(ang);
     Lwheel[i][1]=width/2;    
     Lwheel[i][2]=radius*cos(ang);
@@ -267,7 +267,7 @@ drawRobot(float x,float y,float theta,float eyeangle, float robotlengthA,float r
     //if(title!=NULL)showMessage(0.3,0.0, 0.5,title);
 
     if(showtitles)showMessage(0.3,0.0, 0.5,title);
-      glRotatef(theta*180/M_PI, 0.0, 0.0, 1.0);
+    glRotatef(theta*180/constants::pi, 0.0, 0.0, 1.0);
       glPushMatrix();                             // Left wheel +2
         glTranslatef(0,robothalfwidth,wheelrad);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, wheel_specular);
