@@ -16,6 +16,7 @@ Contains, classess for things, eyes, and binoculus. Monoculus dropped for the mo
 #include "coordmatrix.h"
 #include "bvglobalini.h"
 #include "constants.hpp"
+#include "vehicle_types.hpp"
 
 using std::cout;
 using std::endl;
@@ -30,17 +31,6 @@ extern readinifile GS; //global singleton - initialised from a file.
 // Light colour: Could do this as a one to one relationship to the photoreceptors, perhaps in a future version
 // in the interum  yellow=red+green, cyan=blue+green, magenta=red+blue, orange=red+yellow!
 enum{OFF,RED,GREEN,BLUE,YELLOW,CYAN,MAGENTA,WHITE};//light colour
-#define FIXEDLIGHT 0
-#define SHYLIGHTSEEKER 1
-#define AGGRESSLIGHTSEEKER 2
-#define AGGRESSLIGHTPHOBE 3
-#define SHYLIGHTPHOBE 4
-#define PREY 5
-#define BRIGHTPREY 6
-#define PREDATOR 7
-#define SPECULATRIX 8
-#define TESTVEHICLE 9
-
 
 /// All things must have things that attributes an id, colour,
 /// halfwidth and type. Mainly used by the eyes so perhaps should also
@@ -53,7 +43,7 @@ class Thing{
 public:
   int id; /*!< unique id for each vehicle */
   int lcolour;	//Light colour  ie red blue green, cerise, aquamarine, turquoise, OFF 
-  int vehicletype; // was bovatype, FIXEDLIGHT etc
+  int vehicletype; // was bovatype, vehicleTypes::fixed_light etc
   int nCollisions; // number of collisions
   float halfwidth; //halfwidth - this is a typical dimension and should relate to the impression on the eye (dim)
   std::string name; // name (will use to display a label for  the vehicle
@@ -385,29 +375,29 @@ public:
   void think(){
     Ml=0;
     Mr=0;
-    if (vehicletype==SHYLIGHTSEEKER){
+    if (vehicletype==vehicleTypes::shy_light_seeker){
       float K1=GS.ShySeeker[7];
       float K2=GS.ShySeeker[8];
       Ml=K1/(lefteye.GreenPR[0]+.1)-K2;
       Mr=K1/(righteye.GreenPR[0]+.1)-K2;
     }
-    if (vehicletype==AGGRESSLIGHTSEEKER){
+    if (vehicletype==vehicleTypes::aggress_light_seeker){
       float K1=GS.AggressSeeker[7];
       Mr=lefteye.GreenPR[0]*K1;
       Ml=righteye.GreenPR[0]*K1;
     }
-    if (vehicletype==AGGRESSLIGHTPHOBE){
+    if (vehicletype==vehicleTypes::aggress_light_phobe){
       float K1=GS.AggressPhobe[7];
       Ml=lefteye.GreenPR[0]*K1;
       Mr=righteye.GreenPR[0]*K1;
     }
-    if (vehicletype==SHYLIGHTPHOBE){
+    if (vehicletype==vehicleTypes::shy_light_phobe){
       float K1=GS.ShyPhobe[7];
       float K2=GS.ShyPhobe[8];
       Mr=K1/(lefteye.GreenPR[0]+.1)-K2;
       Ml=K1/(righteye.GreenPR[0]+.1)-K2;
     }
-    if (vehicletype==PREDATOR){
+    if (vehicletype==vehicleTypes::predator){
       float K1=GS.Predator[7];
       Mr=lefteye.BluePR[0]*K1;
       Ml=righteye.BluePR[0]*K1;
@@ -415,22 +405,22 @@ public:
 	Mr=.04;
       }
     }
-    if (vehicletype==PREY){
+    if (vehicletype==vehicleTypes::prey){
       float K1=GS.Prey[7];
       float K2=GS.Prey[8];
       Ml=K1/(lefteye.GreenPR[0]+.1)-K2;
       Mr=K1/(righteye.GreenPR[0]+.1)-K2;
     }
-    if (vehicletype==TESTVEHICLE){
+    if (vehicletype==vehicleTypes::test_vehicle){
       float K1=GS.TestVehicle[7];
       Mr=lefteye.GreenPR[0]*K1;
       Ml=righteye.GreenPR[0]*K1;
     }
-    if (vehicletype==SPECULATRIX){
+    if (vehicletype==vehicleTypes::speculatrix){
       //doing this in updatespecu
       //Ml=(lefteye.GreenPR[0]);// debugging...
     }
-    if (vehicletype==BRIGHTPREY){
+    if (vehicletype==vehicleTypes::bright_prey){
       //MR=(.01/(greenlefteyeresponse+.1)-.03)+(13*redlefteyeresponse);
       //ML=(.01/(greenrighteyeresponse+.1)-.03)+(13*redrighteyeresponse);
 
@@ -492,7 +482,7 @@ public:
     //B=.1;Brot=.00001;
     B=0.64;Brot=0.004;
     name=argname;
-    vehicletype=FIXEDLIGHT;
+    vehicletype= vehicleTypes::fixed_light;
     x[0]=0;x[1]=0;x[2]=theta;x[3]=xx,x[4]=yy;
     lcolour=colour;
     A.trans(x[2],x[3],x[4]);

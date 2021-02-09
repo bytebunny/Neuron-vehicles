@@ -4,6 +4,7 @@
 #include <cmath>
 
 #include "constants.hpp"
+#include "vehicle_types.hpp"
 #include "nrWindow.h"
 #include "bvglobalini.h"
 
@@ -25,16 +26,6 @@ GLfloat light1_position[] ={-1.0, 0.0, 2.0, 0.0};
 
 enum {
   NONE, START, STOP, NAMES, NOLIGHT, VOLUME, SHADOW, QUIT, AERIALVIEW,GROUNDVIEW,RELOADINI,SAVELOGS,SHOWTITLES};
-#define FIXEDLIGHT 0
-#define SHYLIGHTSEEKER 1
-#define AGGRESSLIGHTSEEKER 2
-#define AGGRESSLIGHTPHOBE 3
-#define SHYLIGHTPHOBE 4
-#define PREY 5
-#define BRIGHTPREY 6
-#define PREDATOR 7
-#define SPECULATRIX 8
-#define TESTVEHICLE 9
 
 
 void drawRobot(float x,float y,float theta,float eyeangle,float robotlengthA,float robothalfwidth,float eyeposx, int eyeconeang,string & title, int flag);
@@ -279,7 +270,7 @@ drawRobot(float x,float y,float theta,float eyeangle, float robotlengthA,float r
 	drawWheel(16,wheelrad,0.1);
       glPopMatrix();//+1
       glPushMatrix();                            // Right eye +2
-        if (flag!=SPECULATRIX){
+        if (flag!=vehicleTypes::speculatrix){
         glTranslatef(eyepos_x,-robothalfwidth,wheelrad*2);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, lblue_specular);
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, no_ambient);
@@ -293,7 +284,7 @@ drawRobot(float x,float y,float theta,float eyeangle, float robotlengthA,float r
 	}
       glPopMatrix();//+1
       glPushMatrix();                            // Left eye +2
-        if (flag==SPECULATRIX){
+        if (flag==vehicleTypes::speculatrix){
           glTranslatef(eyepos_x,0,wheelrad*2);
         }else{
           glTranslatef(eyepos_x,robothalfwidth,wheelrad*2);
@@ -312,31 +303,37 @@ drawRobot(float x,float y,float theta,float eyeangle, float robotlengthA,float r
       glPushMatrix();                             // Body+2
         glTranslatef(robotlength/3,0.0,0.12);
 	glScalef(robotlength,2.0*robothalfwidth,wheelrad+.02);
-//	if (robot->thing == PREDATOR || robot->thing == AGGRESSLIGHTSEEKER){
+//	if (robot->thing == vehicleTypes::predator || robot->thing == vehicleTypes::aggress_light_seeker){
 	switch (flag){
-	  case FIXEDLIGHT://FIXEDLIGHT
+    case vehicleTypes::fixed_light:
 	    //break;
-	  case SHYLIGHTSEEKER: // SHYLIGHTSEEKER
+    case vehicleTypes::shy_light_seeker:
 	    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, lblue_ambient);
 	    glMaterialfv(GL_FRONT, GL_SPECULAR, lblue_specular);
 	    break;
-	  case AGGRESSLIGHTSEEKER: // AGGRESSLIGHTSEEKER
+	  case vehicleTypes::aggress_light_seeker:
 	    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, no_ambient);
 	    glMaterialfv(GL_FRONT, GL_SPECULAR, green_specular);
 	    break;
-	  case SHYLIGHTPHOBE: //SHYLIGHTPHOBE
+      // case vehicleTypes::aggress_light_phobe:
+         // missing
+      // break;
+	  case vehicleTypes::shy_light_phobe:
 	    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, bright_green_ambient);
 	    glMaterialfv(GL_FRONT, GL_SPECULAR, bright_green_specular);
 	    break;
-	  case PREY: //PREY
+	  case vehicleTypes::prey:
 	    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, yellow_ambient);
 	    glMaterialfv(GL_FRONT, GL_SPECULAR, yellow_specular);
 	    break;
-	  case PREDATOR: // PREDATOR
+      // case vehicleTypes::bright_prey:
+         // missing
+      // break;
+	  case vehicleTypes::predator:
 	    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, bright_red_ambient);
 	    glMaterialfv(GL_FRONT, GL_SPECULAR, bright_red_specular);
 	    break;
-	  case SPECULATRIX: // Speculatrix
+	  case vehicleTypes::speculatrix:
 	    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, bright_red_ambient);
 	    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
 	    break;

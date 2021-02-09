@@ -85,6 +85,7 @@ Learning/optimization
 
 #include"config.hpp"
 #include"constants.hpp"
+#include"vehicle_types.hpp"
 
 //#include <algorithm>    // std::remove_if
 #include <fstream>
@@ -108,20 +109,6 @@ using std::iterator;
 using std::list;
 using std::ofstream;
 using std::string;
-
-
-#define FIXEDLIGHT 0
-#define SHYLIGHTSEEKER 1
-#define AGGRESSLIGHTSEEKER 2
-#define AGGRESSLIGHTPHOBE 3
-#define SHYLIGHTPHOBE 4
-#define PREY 5
-#define BRIGHTPREY 6
-#define PREDATOR 7
-#define SPECULATRIX 8
-#define TESTVEHICLE 9
-
-
 
 //void drawRobot(float x,float y,float theta,float eyeangle,int eyeconeang, char * title, int flag);
 void drawRobot(float x,float y,float theta,float eyeangle,int eyeconeang, string & title, int flag);
@@ -248,7 +235,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       if (yy>GS.worldboundary)yy=GS.worldboundary;
       if (yy<-GS.worldboundary)yy=-GS.worldboundary;
       Binoculus newvehicle("A",-3* constants::pi /4,xx,yy,GREEN);
-      //newbeast.change(FIXEDLIGHT);
+      //newbeast.change( vehicleTypes::fixed_light );
       //newbeast.settheta();
       globalBvl.push_back (newvehicle);
       globalNVselect=globalBvl.end();
@@ -439,7 +426,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       }
       if(globalkbuf.find("AP")!=std::string::npos){// Aggressive Phobe
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=AGGRESSLIGHTPHOBE;
+	(*globalNVselect).vehicletype=vehicleTypes::aggress_light_phobe;
 	(*globalNVselect).name="Aggressive Phobe";
 	(*globalNVselect).setEyeDivergence(GS.AggressPhobe.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(BLUE);
@@ -448,7 +435,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       }
       if(globalkbuf.find("SS")!=std::string::npos){// Shy Seeker
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=SHYLIGHTSEEKER;
+	(*globalNVselect).vehicletype=vehicleTypes::shy_light_seeker;
 	(*globalNVselect).name="Shy Seeker";
 	(*globalNVselect).setEyeDivergence(GS.ShySeeker.at(6)*constants::pi/180,.5,.15);
 	(*globalNVselect).setcolour(BLUE);
@@ -458,7 +445,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       }
       if(globalkbuf.find("SP")!=std::string::npos){// Shy Phobe
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=SHYLIGHTPHOBE;
+	(*globalNVselect).vehicletype=vehicleTypes::shy_light_phobe;
 	(*globalNVselect).name="Shy Phobe";
 	(*globalNVselect).setEyeDivergence(GS.ShyPhobe.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(BLUE);
@@ -467,7 +454,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       }
       if(globalkbuf.find("AS")!=std::string::npos){// Aggressive Seeker
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=AGGRESSLIGHTSEEKER;
+	(*globalNVselect).vehicletype=vehicleTypes::aggress_light_seeker;
 	(*globalNVselect).name="Aggressive Seeker";
 	(*globalNVselect).setEyeDivergence(GS.AggressSeeker.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(RED);
@@ -477,7 +464,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 
       if(globalkbuf.find("DD")!=std::string::npos){// Agressive Seeker (DD)
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=AGGRESSLIGHTSEEKER;
+	(*globalNVselect).vehicletype=vehicleTypes::aggress_light_seeker;
 	makeanagressiveseeker();
 	cout <<"found AS"<<endl;
 	globalkbuf.clear();
@@ -489,7 +476,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 
       if(globalkbuf.find("DP")!=std::string::npos){// Dumb Prey
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=PREY;
+	(*globalNVselect).vehicletype=vehicleTypes::prey;
 	(*globalNVselect).name="Dumb Prey";
 	(*globalNVselect).setEyeDivergence(GS.Prey.at(6)*constants::pi/180,0.5,0.15);
 	(*globalNVselect).setcolour(BLUE);
@@ -498,7 +485,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       }
       if(globalkbuf.find("BP")!=std::string::npos){// Bright Prey
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=BRIGHTPREY;
+	(*globalNVselect).vehicletype=vehicleTypes::bright_prey;
 	(*globalNVselect).name="Bright Prey";
 	(*globalNVselect).setEyeDivergence(GS.BrightPrey.at(6)*constants::pi/180,0.5,0.15);
 	(*globalNVselect).setcolour(BLUE);
@@ -507,7 +494,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       }
       if(globalkbuf.find("PR")!=std::string::npos){// Predator
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=PREDATOR;
+	(*globalNVselect).vehicletype=vehicleTypes::predator;
 	(*globalNVselect).name="Predator";
 	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(RED);
@@ -518,7 +505,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
 	cout <<"Machina Specularix\n";
 	(*globalNVselect).resetstates();
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=SPECULATRIX;
+	(*globalNVselect).vehicletype=vehicleTypes::speculatrix;
 	(*globalNVselect).name="M.Speculatrix";
 	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*constants::pi/180,0,0);
 	cout << "eye field set to "<<GS.Predator.at(6)<<"degrees"<<endl;
@@ -530,7 +517,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
       }
       if(globalkbuf.find("TV")!=std::string::npos){// Test Vehicle
 	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=TESTVEHICLE;
+	(*globalNVselect).vehicletype=vehicleTypes::test_vehicle;
 	(*globalNVselect).name="Test Vehicle";
 	(*globalNVselect).setEyeDivergence(GS.TestVehicle.at(6)*constants::pi/180,0,0);
 	(*globalNVselect).setcolour(BLUE);
@@ -582,7 +569,7 @@ void NRWindow::CallBackDisplayFunc(void){
      yy=(*iter).gety();
      th=(*iter).getth();
 
-     if((*iter).vehicletype==FIXEDLIGHT){
+     if((*iter).vehicletype==vehicleTypes::fixed_light){
        drawFixedLight(xx,yy);
      }else{
        float eyediv=(*iter).getEyeDiv();
@@ -593,7 +580,7 @@ void NRWindow::CallBackDisplayFunc(void){
        drawRobot(xx,yy,th,eyediv,60,(*iter).name,(*iter).vehicletype);
      }
 
-     /*     if((*iter).btype()==FIXEDLIGHT)
+     /*     if((*iter).btype()==vehicleTypes::fixed_light)
 
      else{
        eyeangle=(*iter).eyeth();
@@ -610,7 +597,7 @@ void NRWindow::CallBackDisplayFunc(void){
 
   /* attempt to get labels to orient and draw right.	 
   for (iter=bovalist.begin(); iter != bovalist.end(); iter++){
-    if((*iter).btype()!=FIXEDLIGHT){
+    if((*iter).btype()!=vehicleTypes::fixed_light){
       xx=(*iter).x();
       yy=(*iter).y();
       showMessage(xx,yy,0,(*iter).title());
@@ -644,11 +631,11 @@ void NRWindow::CallBackIdleFunc(void){
   list<Binoculus>::iterator iter,lightiter;
 
     for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++) {
-      if ((*iter).vehicletype!=FIXEDLIGHT){
+      if ((*iter).vehicletype!=vehicleTypes::fixed_light){
       (*iter).look();
       //if (GS.brainversion==1)(*iter).think();
       (*iter).think();
-      if ((*iter).vehicletype == SPECULATRIX){
+      if ((*iter).vehicletype == vehicleTypes::speculatrix){
 	(*iter).updatespecu();
 	//(*iter).lefteye.clearRetina();// probably pointless, but trying to track down a bug.
       }else{
@@ -658,7 +645,7 @@ void NRWindow::CallBackIdleFunc(void){
       }
     }
     for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++) {
-      if ((*iter).vehicletype!=FIXEDLIGHT){
+      if ((*iter).vehicletype!=vehicleTypes::fixed_light){
       eulerstep(* iter);// don't euler step lights
       worldphysics(* iter);
       }
@@ -675,13 +662,13 @@ void NRWindow::CallBackIdleFunc(void){
 //-----------------------------------------------------------------------------
 
 void makealight(){
-  (*globalNVselect).vehicletype=FIXEDLIGHT;
+  (*globalNVselect).vehicletype=vehicleTypes::fixed_light;
   (*globalNVselect).name="L";
   (*globalNVselect).setcolour(GREEN);
 }
 
 void makeashyseeker(){
-  (*globalNVselect).vehicletype=SHYLIGHTSEEKER;
+  (*globalNVselect).vehicletype=vehicleTypes::shy_light_seeker;
   (*globalNVselect).name="Shy Seeker";
   (*globalNVselect).setEyeDivergence(GS.ShySeeker[4]*constants::pi/180,0.4,0.1);
   (*globalNVselect).setMIBs(GS.ShySeeker[0],GS.ShySeeker[1],GS.ShySeeker[2],GS.ShySeeker[3]);// set the mass, inertia and damping
@@ -691,7 +678,7 @@ void makeashyseeker(){
 }
 
 void makeanagressiveseeker(){
-  (*globalNVselect).vehicletype=AGGRESSLIGHTSEEKER;
+  (*globalNVselect).vehicletype=vehicleTypes::aggress_light_seeker;
   (*globalNVselect).name="Aggressive Seeker";
   (*globalNVselect).setEyeDivergence(.45,0,0);
   (*globalNVselect).setcolour(BLUE);
@@ -828,16 +815,16 @@ int main(int argc, char *argv[]){
 
 
   /*
-  addbeast(-1.5,-1.0,FIXEDLIGHT);
-  addbeast(-1.0,-0.5,SHYLIGHTSEEKER);
-  addbeast(-0.5,0.0,AGGRESSLIGHTSEEKER);
-  addbeast(0.0,0.5,SHYLIGHTPHOBE);
-  addbeast(0.5,1.0,PREY);
-  addbeast(-2.0,1.0,BRIGHTPREY);
-  addbeast(1.0,1.5,PREDATOR);
-  addbeast(0.0,0.0,FIXEDLIGHT);
-  addbeast(0.0,2.2,FIXEDLIGHT);
-  addbeast(2.0,2.2,FIXEDLIGHT);
+  addbeast(-1.5,-1.0,vehicleTypes::fixed_light);
+  addbeast(-1.0,-0.5,vehicleTypes::shy_light_seeker);
+  addbeast(-0.5,0.0,vehicleTypes::aggress_light_seeker);
+  addbeast(0.0,0.5,vehicleTypes::shy_light_phobe);
+  addbeast(0.5,1.0,vehicleTypes::prey);
+  addbeast(-2.0,1.0,vehicleTypes::bright_prey);
+  addbeast(1.0,1.5,vehicleTypes::predator);
+  addbeast(0.0,0.0,vehicleTypes::fixed_light);
+  addbeast(0.0,2.2,vehicleTypes::fixed_light);
+  addbeast(2.0,2.2,vehicleTypes::fixed_light);
 
   ncvselect=bovalist.begin();/// Need to keep at least one item in the list
   */
