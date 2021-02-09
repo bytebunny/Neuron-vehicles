@@ -7,6 +7,9 @@ endif()
 
 project( Neuron-vehicles VERSION 4.0 LANGUAGES CXX )
 
+configure_file( config.hpp.in config.hpp ) # puts config.h under ${CMAKE_CURRENT_BINARY_DIR}
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
 #------------------------------------ Dependencies ---------------------------------
 find_package( OpenGL REQUIRED COMPONENTS OpenGL )
 find_package( GLUT REQUIRED )
@@ -21,7 +24,7 @@ target_include_directories( neuron_vehicles PRIVATE ${GLUT_INCLUDE_DIRS} )
 
 target_link_libraries( neuron_vehicles PRIVATE ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
 
-target_compile_features( neuron_vehicles PRIVATE cxx_auto_type cxx_constexpr cxx_nullptr ) # all since C++11
+target_compile_features( neuron_vehicles PRIVATE cxx_std_17 ) # we use 'inline constexpr'
 
 target_compile_options( neuron_vehicles PRIVATE
   $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>: # how to add other warning options when ..._ID:Intel?

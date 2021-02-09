@@ -3,9 +3,11 @@
 
 # ...but these files:
 !*.cpp
+!*.hpp
 !*.h
 !*.gitignore
 !*.md
+!*.in
 !*.ini
 !*.txt
 

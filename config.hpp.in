@@ -1,0 +1,13 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+namespace config
+{
+    // inline constexpr requires C++17
+    inline constexpr char project_name[] { "@PROJECT_NAME@" }; // populated by CMake.
+    inline constexpr char project_version[] { "@PROJECT_VERSION@" };
+    inline constexpr char project_version_major[] { "@PROJECT_VERSION_MAJOR@" };
+    inline constexpr char project_version_minor[] { "@PROJECT_VERSION_MINOR@" };
+}
+
+#endif // CONFIG_H

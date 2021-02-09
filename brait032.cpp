@@ -83,10 +83,8 @@ way of doing things, please advise - or better still please implement.
 Learning/optimization
 */
 
-char version[]="3.2  Feb2015";
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include <config.hpp>
+
 
 
 //#include <algorithm>    // std::remove_if
@@ -287,7 +285,7 @@ void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
     GLdouble pmatrix[16],mvmatrix[16];
     //int i;
     cout << "  Braitenberg Vehicle Simulator\n  -----------------------------\n";
-    cout << "Version "<<version <<endl;
+    cout << "Version "<< config::project_version << endl;
     glGetDoublev(GL_PROJECTION_MATRIX,pmatrix);
     glGetDoublev(GL_MODELVIEW_MATRIX,mvmatrix);
     cout << "Projection Matrix"<< endl;
