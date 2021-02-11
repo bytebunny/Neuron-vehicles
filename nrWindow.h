@@ -25,9 +25,12 @@
 @author William Harwin
 */
 
-#include<string>
+#include <string>
+#include <list>
 #include "glutMaster.h"
 #include "glutWindow.h"
+
+class Binoculus;
 
 //-----------------------------------------------------------
 class NRWindow : public GlutWindow{
@@ -35,6 +38,8 @@ public:
 
   int          height, width;
   int          initPositionX, initPositionY;
+    static std::list<Binoculus> globalBvl;
+    static std::list<Binoculus>::iterator globalNVselect;
 
   NRWindow(GlutMaster * glutMaster,
 	     int setWidth, int setHeight,
@@ -42,15 +47,19 @@ public:
 	     char * title);
   ~NRWindow();
 
-  void CallBackDisplayFunc(void);
-  void CallBackReshapeFunc(int w, int h);   
-  void CallBackIdleFunc(void);
-  void CallBackKeyboardFunc(unsigned char key, int x, int y);
+    void CallBackDisplayFunc();
+    void CallBackReshapeFunc( int w, int h);
+    void CallBackIdleFunc();
+    void CallBackKeyboardFunc( unsigned char key, int x, int y);
   void CallBackSpecialFunc(unsigned char key, int x, int y);
-  void CallBackMouseFunc(int button, int state, int x, int y);
+    void CallBackMouseFunc( int button, int state, int x, int y);
 
   void StartMoving(GlutMaster * glutMaster);
   void StopMoving(GlutMaster * glutMaster);
+private:
+    static int s_elapsed_time; // defined in the corresponding .cpp file.
+    static int s_loop_time;
+    static std::string s_key_buffer;
 };
 
 

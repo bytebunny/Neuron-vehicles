@@ -83,7 +83,6 @@ way of doing things, please advise - or better still please implement.
 Learning/optimization
 */
 
-#include"config.hpp"
 #include"constants.hpp"
 #include"vehicle_types.hpp"
 
@@ -100,7 +99,6 @@ Learning/optimization
 #include "bvglobalini.h" // for initialising variables from bv.ini
 #include "nrWindow.h"
 
-//using namespace std;
 using std::cout;
 using std::endl;
 using std::ifstream;
@@ -110,36 +108,19 @@ using std::list;
 using std::ofstream;
 using std::string;
 
-void makealight();
-void makeashyseeker();
 void makeashyphobe();
-void makeanagressiveseeker();
 void makeanagressivephobe();
 void makeapredator();
 void makeaprey();
 void makeabrightprey();
 
 
-extern NRWindow     * Window ;
-extern GlutMaster     * glutMaster;
-//extern GLfloat orthratio;
-//extern GLfloat aspect;
-extern GLfloat globalphi;
-extern GLfloat globaltheta;
-extern GLfloat cameraX;
-extern GLfloat cameraY;
-extern GLfloat cameraZ;
-
-
-
 // --------------------Globals --------------
 //list<Binoculus> bvl;
-list<Binoculus>::iterator globalNVselect; 
-list<Binoculus> globalBvl;
 int globalID=1;//unique id
-string globalkbuf;
-int globaltime=0; // experimental for the moment.
-int globallooptime=0;
+//string globalkbuf;
+//int globaltime=0; // experimental for the moment.
+//int globallooptime=0;
 readinifile GS; //global singleton - initialised from a file.
 bool aerialview=true;
 int viewwidth=820;
@@ -156,524 +137,9 @@ int viewheight=680;
 
 //----------------------------------------------------------------------------
 
-void NRWindow::StartMoving(GlutMaster * glutMaster){
-
-   glutMaster->SetIdleToCurrentWindow();
-   glutMaster->EnableIdleFunction();
-}
-
-void NRWindow::StopMoving(GlutMaster * glutMaster){
-
-   glutMaster->SetIdleToCurrentWindow();
-   glutMaster->DisableIdleFunction();
-}
-
-// Can't get this to work...
-void NRWindow::CallBackSpecialFunc(unsigned char key, int x, int y)
-{
-  switch (key) {
-  case GLUT_KEY_UP : cout <<"Glut key up"<<endl; break;
-  case GLUT_KEY_DOWN : cout <<"Glut key down"<<endl; break;
-  default:
-    cout << "Special character  " << key << " at "<< x <<", "<<y<<endl;
-    Window->StopMoving(glutMaster);   // stop idle function
-    break;
-  }
-  cout << "Special currently not getting called..."<<endl;
-}
-
-void NRWindow::CallBackMouseFunc(int button, int state, int mx, int my){
-
-  if (button == GLUT_LEFT_BUTTON) {
-    if (state == GLUT_DOWN) {
-      cout << "down  " << button << " is at "<< state <<endl;
-    }
-    if (state == GLUT_UP) {
-      cout << "up  " << button << " is at "<< state <<"x="<<mx<<"y="<<my<<endl;
-
-      // direct copy from 's'
-
-    float yy=(viewheight/2-my)*cameraZ/830.0+cameraY;
-    float xx=(mx-viewwidth/2)*cameraZ/830.0+cameraX;
-    list<Binoculus>::iterator iter;
-    
-    float nearest=9999.0;
-    float delx,dely,d2;
-    for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++){
-      delx=(*iter).getx()-xx;
-      dely=(*iter).gety()-yy;
-      d2=delx*delx+dely*dely;
-      if (d2<nearest){globalNVselect=iter;nearest=d2;}
-    }
-
-
-
-    }
-  }
-}
-
-
-void NRWindow::CallBackKeyboardFunc(unsigned char key, int mx, int my)
-{
-  switch (key) {
-  case 'a':/// Add a light
-    {
-      float yy=(viewheight/2-my)*cameraZ/830.0+cameraY;
-      float xx=(mx-viewwidth/2)*cameraZ/830.0+cameraX;
-      cout <<"xx="<<xx<<",yy="<<yy<<endl;
-      if (xx>GS.worldboundary)xx=GS.worldboundary;
-      if (xx<-GS.worldboundary)xx=-GS.worldboundary;
-      if (yy>GS.worldboundary)yy=GS.worldboundary;
-      if (yy<-GS.worldboundary)yy=-GS.worldboundary;
-      Binoculus newvehicle("A",-3* constants::pi /4,xx,yy,GREEN);
-      //newbeast.change( vehicleTypes::fixed_light );
-      //newbeast.settheta();
-      globalBvl.push_back (newvehicle);
-      globalNVselect=globalBvl.end();
-      globalNVselect--;
-      
-      //globalNVselect=globalBvl.end()--;
-    }
-    break;
-  case 'b':// not sure what this is for...
-    aerialview=true;
-    GLfloat gx,gy;
-    gx=(*globalNVselect).getx();
-    gy=(*globalNVselect).gety();
-    break;
-  case 'e':/// Erase/delete NCV
-      if (globalBvl.size()>1){
-        globalBvl.erase(globalNVselect);
-        globalNVselect=globalBvl.begin();
-      }
-      break;
-  case 'f':/// rotate world  counter clockwise
-      globalphi +=1;
-      break;
-  case 'g':/// rotate world clockwise
-      globalphi +=-1;
-      break;
-  case 'h':/// help
-    GLdouble pmatrix[16],mvmatrix[16];
-    //int i;
-    cout << "  Braitenberg Vehicle Simulator\n  -----------------------------\n";
-    cout << "Version "<< config::project_version << endl;
-    glGetDoublev(GL_PROJECTION_MATRIX,pmatrix);
-    glGetDoublev(GL_MODELVIEW_MATRIX,mvmatrix);
-    cout << "Projection Matrix"<< endl;
-    for(int i=0;i<4;i++)
-      cout << pmatrix[i]<<"\t"<<pmatrix[i+4]<<"\t"<<pmatrix[i+8]<<"\t"<<pmatrix[i+12]<<endl;
-    cout <<endl;
-    cout <<"ModelView Matrix"<<endl;
-    for(int i=0;i<4;i++)
-      cout << mvmatrix[i]<<"\t"<<mvmatrix[i+4]<<"\t"<<mvmatrix[i+8]<<"\t"<<mvmatrix[i+12]<<endl;
-    cout <<endl;
-    //cout << "x="<<x<<",y="<<y<<endl;
-    break;
-  case 'i':/// Information on selected vehicle
-    (*globalNVselect).info();
-    cout << "loop time (mS) ="<<globallooptime<<endl;
-    cout << "elapsed time (mS) ="<<globaltime<<endl;
-    break;
-
-  case 'l':/// Reload bv.ini
-    if (GS.ini("bv.ini",0))
-      cout << "Warning: could not open bv.ini, using defaults "<<endl;
-    GS.inspect();
-    break;
-
-  case 'm':/// Move a light or beast
-      {
-	float yy=(viewheight/2-my)*cameraZ/830.0+cameraY;
-	float xx=(mx-viewwidth/2)*cameraZ/830.0+cameraX;
-	(*globalNVselect).relocate(xx,yy);
-      }
-      break;
-
-  case 'n':/// Select next vehicle
-      if (globalBvl.size()>1){
-        globalNVselect++;
-        if (globalNVselect==globalBvl.end())globalNVselect=globalBvl.begin();
-      }
-      break;
-  case 'p':/// Select previous vehicle
-      if (globalBvl.size()>1){
-        if (globalNVselect==globalBvl.begin())globalNVselect=globalBvl.end();
-        globalNVselect--;
-      }
-      break;
-
-  case 'r':/// Reset the world
-      globalphi = globaltheta=0;
-      cameraX=cameraY=0;
-      break;
-  case 's':/// Select the nearest NCV 
-    {
-    float yy=(viewheight/2-my)*cameraZ/830.0+cameraY;
-    float xx=(mx-viewwidth/2)*cameraZ/830.0+cameraX;
-    list<Binoculus>::iterator iter;
-    
-    float nearest=9999.0;
-    float delx,dely,d2;
-    for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++){
-      delx=(*iter).getx()-xx;
-      dely=(*iter).gety()-yy;
-      d2=delx*delx+dely*dely;
-      if (d2<nearest){globalNVselect=iter;nearest=d2;}
-    }
-  }
-    break;
-
-
-  case 'q':/// quit
-  case 27:///  quit
-    exit(1);
-    break;
-  case 'o':/// currently identical to 'z'
-    cameraZ=cameraZ+1.5;
-    //    orthratio=orthratio*1.260;
-    //changeview();
-    break;
-  case 'O':/// currently identical to 'Z'
-    cameraZ=cameraZ-1.5;
-    //orthratio=orthratio/1.260;
-    //changeview();
-    break;
-  case 't':/// rotate towards
-    globaltheta +=1;
-    break;
-
-  case 'v':/// rotate away
-      globaltheta +=-1;
-      break;
-
-  case 'x':/// move camera +ve x
-    cameraX=cameraX+.5;
-    break;
-  case 'X':/// move camera -ve x
-    cameraX=cameraX-.5;
-    break;
-  case 'Y':/// move camera -ve y
-    cameraY=cameraY-.5;
-    break;
-  case 'y':/// move camera +ve y
-    cameraY=cameraY+.5;
-    break;
-  case 'Z':/// Camera out
-    cameraZ=cameraZ-2;
-    if (cameraZ<0)
-      cameraZ=1.5;
-    //CallBackDisplayFunc();
-//    changeview();
-    break;
-  case 'z':/// Camera in
-    cameraZ=cameraZ+2;
-    //CallBackDisplayFunc();
-    //changeview();
-    break;
-  case ' ':/// start simulation
-    cout << "setting idle to moving" <<endl;
-    Window->StartMoving(glutMaster);   // enable idle function
-    break;
-  case '>':
-    if ((*globalNVselect).vehicletype <7)(*globalNVselect).vehicletype++;
-    //      (*ncvselect).incncv();
-      break;
-  case '<':
-    if ((*globalNVselect).vehicletype >0)(*globalNVselect).vehicletype--;
-    //(*ncvselect).decncv();
-      break;
-    break;
-  case 'A':/// Two letter command
-  case 'B':/// Two letter command
-  case 'D':/// Two letter command
-  case 'L':/// Save the log files
-  case 'M':/// Two letter command
-  case 'P':/// Two letter command
-  case 'R':/// Two letter command
-  case 'S':/// Two letter command
-  case 'T':/// Two letter command
-  case 'U':/// Two letter command
-  case 'V':/// Two letter command
-  case '1':/// Two letter command
-  case '2':/// Two letter command
-  case '3':/// Two letter command
-  case '4':/// Two letter command
-    {
-      //globalkbuf.append(""+key);
-      globalkbuf +=key;
-      //cout << key<<"->"<<globalkbuf<<endl;
-      cout << "->"<<globalkbuf<<endl;
-      if(globalkbuf.find("RL")!=std::string::npos){ // Reset to a light
-	(*globalNVselect).resetstates();
-	makealight();
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("DUMP")!=std::string::npos){ // Dump a matlab file
-	writevehiclelogs("pos1.mat",'p',1);
-	writevehiclelogs("eye2.mat",'e',2);
-	cout <<"Matlab dump"<<endl;
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("AP")!=std::string::npos){// Aggressive Phobe
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::aggress_light_phobe;
-	(*globalNVselect).name="Aggressive Phobe";
-	(*globalNVselect).setEyeDivergence(GS.AggressPhobe.at(6)*constants::pi/180,0,0);
-	(*globalNVselect).setcolour(BLUE);
-	cout <<"found AP"<<endl;
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("SS")!=std::string::npos){// Shy Seeker
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::shy_light_seeker;
-	(*globalNVselect).name="Shy Seeker";
-	(*globalNVselect).setEyeDivergence(GS.ShySeeker.at(6)*constants::pi/180,.5,.15);
-	(*globalNVselect).setcolour(BLUE);
-	//makeashyseeker();
-	cout <<"found SS"<<endl;
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("SP")!=std::string::npos){// Shy Phobe
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::shy_light_phobe;
-	(*globalNVselect).name="Shy Phobe";
-	(*globalNVselect).setEyeDivergence(GS.ShyPhobe.at(6)*constants::pi/180,0,0);
-	(*globalNVselect).setcolour(BLUE);
-	cout <<"found SP"<<endl;
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("AS")!=std::string::npos){// Aggressive Seeker
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::aggress_light_seeker;
-	(*globalNVselect).name="Aggressive Seeker";
-	(*globalNVselect).setEyeDivergence(GS.AggressSeeker.at(6)*constants::pi/180,0,0);
-	(*globalNVselect).setcolour(RED);
-	cout <<"found DP"<<endl;
-	globalkbuf.clear();
-      }
-
-      if(globalkbuf.find("DD")!=std::string::npos){// Agressive Seeker (DD)
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::aggress_light_seeker;
-	makeanagressiveseeker();
-	cout <<"found AS"<<endl;
-	globalkbuf.clear();
-      }
-
-
-
-
-
-      if(globalkbuf.find("DP")!=std::string::npos){// Dumb Prey
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::prey;
-	(*globalNVselect).name="Dumb Prey";
-	(*globalNVselect).setEyeDivergence(GS.Prey.at(6)*constants::pi/180,0.5,0.15);
-	(*globalNVselect).setcolour(BLUE);
-	cout <<"found DP"<<endl;
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("BP")!=std::string::npos){// Bright Prey
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::bright_prey;
-	(*globalNVselect).name="Bright Prey";
-	(*globalNVselect).setEyeDivergence(GS.BrightPrey.at(6)*constants::pi/180,0.5,0.15);
-	(*globalNVselect).setcolour(BLUE);
-	cout <<"found BP"<<endl;
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("PR")!=std::string::npos){// Predator
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::predator;
-	(*globalNVselect).name="Predator";
-	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*constants::pi/180,0,0);
-	(*globalNVselect).setcolour(RED);
-	cout <<"found PR"<<endl;
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("MS")!=std::string::npos){// Test Vehicle
-	cout <<"Machina Specularix\n";
-	(*globalNVselect).resetstates();
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::speculatrix;
-	(*globalNVselect).name="M.Speculatrix";
-	(*globalNVselect).setEyeDivergence(GS.Predator.at(6)*constants::pi/180,0,0);
-	cout << "eye field set to "<<GS.Predator.at(6)<<"degrees"<<endl;
-	//(*globalNVselect).setcolour(RED);
-	(*globalNVselect).setcolour(GREEN);
-	(*globalNVselect).lefteye.inituniform(1,60*constants::pi/180);
-
-	globalkbuf.clear();
-      }
-      if(globalkbuf.find("TV")!=std::string::npos){// Test Vehicle
-	(*globalNVselect).resetstates();
-	(*globalNVselect).vehicletype=vehicleTypes::test_vehicle;
-	(*globalNVselect).name="Test Vehicle";
-	(*globalNVselect).setEyeDivergence(GS.TestVehicle.at(6)*constants::pi/180,0,0);
-	(*globalNVselect).setcolour(BLUE);
-	cout <<"found TV"<<endl;
-	globalkbuf.clear();
-      }
-
-    }
-    break;
-  default:
-    cout << "character  " << key << " at "<< mx <<", "<<my<<endl;
-    Window->StopMoving(glutMaster);   // stop idle function
-    break;
-  }
-  glutPostRedisplay();// should not need to do this, but if missing then it does not refresh. 
-  NRWindow::CallBackDisplayFunc();
-}
-
-
-void NRWindow::CallBackDisplayFunc(void){
-  list<Binoculus>::iterator iter;
-  float xx,yy,th;
-  //int eyecone;
-  //float eyeangle;
-
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-   glPushMatrix();/// @todo should be able to reset the proj or the other matrix so as to avoid this push/pop!
-
-
-   glRotatef(globaltheta, 1.0, 0.0, 0.0);
-   glRotatef(globalphi, 0.0, 0.0, 1.0);
-
-//   Draw_lights();
-
-/// glutSolidTeapot(10);
-/// Teapot coordinate frame, x-axis out of spout , y-axis out of lid, z-axis to rightl
-
-
-//   drawRobot(1.5,1.0,1.0,90.0*constants::pi/180.0,90,"test",1);
-//   drawRobot(0,-2,0,0,230,NULL,3);
-   drawFloor();
-   //   drawLights();      
-//   drawObjectSelector(0,0);
-
-
-   for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++) {
-     xx=(*iter).getx();
-     yy=(*iter).gety();
-     th=(*iter).getth();
-
-     if((*iter).vehicletype==vehicleTypes::fixed_light){
-       drawFixedLight(xx,yy);
-     }else{
-       float eyediv=(*iter).getEyeDiv();
-       // should save this info in eyes... (*iter).getRetinaAngle()*180/constants::pi; For now=60degrees
-
-       // this version uses vehicle dimensions .5,.3.6,drawRobot(xx,yy,th,eyediv,.5,.3,.6,60,(*iter).name,(*iter).vehicletype);
-
-       drawRobot(xx,yy,th,eyediv,60,(*iter).name,(*iter).vehicletype);
-     }
-
-     /*     if((*iter).btype()==vehicleTypes::fixed_light)
-
-     else{
-       eyeangle=(*iter).eyeth();
-       eyecone=(*iter).eye_cone();
-
-       drawRobot(xx,yy,th,eyeangle,eyecone,(*iter).title(),(*iter).btype());
-       }*/
-//      drawObjectSelector(xx,yy);
-   }//end:for
-
-  xx=(*globalNVselect).getx();
-  yy=(*globalNVselect).gety();
-  drawObjectSelector(xx,yy);
-
-  /* attempt to get labels to orient and draw right.	 
-  for (iter=bovalist.begin(); iter != bovalist.end(); iter++){
-    if((*iter).btype()!=vehicleTypes::fixed_light){
-      xx=(*iter).x();
-      yy=(*iter).y();
-      showMessage(xx,yy,0,(*iter).title());
-    }
-    }*/
-  
-  glPopMatrix();
-
-  glLoadIdentity();
-  // Option to put the camera on the selected robot
-  if (aerialview){
-    glTranslatef(-cameraX,-cameraY,-cameraZ);
-  }else{// needs work, is tracking the vehicle but not the orientation...
-    // could have three options and use also the glTranslatef here with xx/yy
-    GLdouble s= sin((*globalNVselect).getth());
-    GLdouble c= cos((*globalNVselect).getth());
-    //cout << (*globalNVselect).getth()<<" c="<<c<<"s="<<s<<endl;
-    gluLookAt(xx-2.5*c,yy-2.5*s,cameraZ/2.0,
-	      xx,yy,0.5,
-	      0,0,1);
-  }
-  glFlush();
-  glutSwapBuffers();
-}//end: CallBackDisplayFunc
-
-/*!
-Routine to cycle through vehicles and see what lights they see
-This is the Glutmaster idle function
-*/
-void NRWindow::CallBackIdleFunc(void){
-  list<Binoculus>::iterator iter,lightiter;
-
-    for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++) {
-      if ((*iter).vehicletype!=vehicleTypes::fixed_light){
-      (*iter).look();
-      //if (GS.brainversion==1)(*iter).think();
-      (*iter).think();
-      if ((*iter).vehicletype == vehicleTypes::speculatrix){
-	(*iter).updatespecu();
-	//(*iter).lefteye.clearRetina();// probably pointless, but trying to track down a bug.
-      }else{
-	(*iter).updatestate();
-      }
-      if(GS.logging)(*iter).log.addcolumn((*iter).getth(),(*iter).getx(),(*iter).gety()); // theta x y
-      }
-    }
-    for (iter=globalBvl.begin(); iter != globalBvl.end(); iter++) {
-      if ((*iter).vehicletype!=vehicleTypes::fixed_light){
-      eulerstep(* iter);// don't euler step lights
-      worldphysics(* iter);
-      }
-    }
-    //}
-    {
-      int previoustime=globaltime;
-      globaltime = glutGet(GLUT_ELAPSED_TIME);
-      globallooptime=globaltime-previoustime;
-    }
-  CallBackDisplayFunc();
-}//end: callbackidlefunction
 
 //-----------------------------------------------------------------------------
 
-void makealight(){
-  (*globalNVselect).vehicletype=vehicleTypes::fixed_light;
-  (*globalNVselect).name="L";
-  (*globalNVselect).setcolour(GREEN);
-}
-
-void makeashyseeker(){
-  (*globalNVselect).vehicletype=vehicleTypes::shy_light_seeker;
-  (*globalNVselect).name="Shy Seeker";
-  (*globalNVselect).setEyeDivergence(GS.ShySeeker[4]*constants::pi/180,0.4,0.1);
-  (*globalNVselect).setMIBs(GS.ShySeeker[0],GS.ShySeeker[1],GS.ShySeeker[2],GS.ShySeeker[3]);// set the mass, inertia and damping
-  //(*globalNVselect).setSSgains(GS.ShySeeker[5],GS.ShySeeker[6]);
-  (*globalNVselect).setcolour(BLUE);
-
-}
-
-void makeanagressiveseeker(){
-  (*globalNVselect).vehicletype=vehicleTypes::aggress_light_seeker;
-  (*globalNVselect).name="Aggressive Seeker";
-  (*globalNVselect).setEyeDivergence(.45,0,0);
-  (*globalNVselect).setcolour(BLUE);
-}
 
 /// Eulerstep. May need version for Monoculus, or a mechanism to allow integration of both 
 // Alternatively, we can move it back into the class and call with deltat
@@ -747,10 +213,9 @@ void worldphysics(Binoculus &nbv){
 
 //---------------------------------------------------------------
 
-
 // Main function for the program
-int main(int argc, char *argv[]){
-  list<Binoculus>::iterator iter;
+int main(int argc, char *argv[])
+{
   char const * filename="bv.ini";
 
   if (GS.ini(filename,0))
@@ -762,47 +227,18 @@ int main(int argc, char *argv[]){
   // from the front of the list.
 
   Binoculus Alice("Alice",-constants::pi/4,0,0,GREEN);
-  //Binoculus SS("Shy Seeker",-constants::pi/4,.56,-.52,OFF);
   Binoculus April("April",0.523599,-.85,-.85,GREEN); //30degrees
-  //Binoculus George("George",-.78,-0.85,0.85,OFF);
 
+  NRWindow::globalBvl.push_back (Alice);
+  NRWindow::globalBvl.push_back (April);
 
-  globalBvl.push_back (Alice);
-  //globalBvl.push_back (SS);
-  globalBvl.push_back (April);
-  globalNVselect=globalBvl.begin();/// Need to keep at least one item in the list
+  NRWindow::globalNVselect = NRWindow::globalBvl.begin();/// Need to keep at least one item in the list
 
-
-  /*
-  addbeast(-1.5,-1.0,vehicleTypes::fixed_light);
-  addbeast(-1.0,-0.5,vehicleTypes::shy_light_seeker);
-  addbeast(-0.5,0.0,vehicleTypes::aggress_light_seeker);
-  addbeast(0.0,0.5,vehicleTypes::shy_light_phobe);
-  addbeast(0.5,1.0,vehicleTypes::prey);
-  addbeast(-2.0,1.0,vehicleTypes::bright_prey);
-  addbeast(1.0,1.5,vehicleTypes::predator);
-  addbeast(0.0,0.0,vehicleTypes::fixed_light);
-  addbeast(0.0,2.2,vehicleTypes::fixed_light);
-  addbeast(2.0,2.2,vehicleTypes::fixed_light);
-
-  ncvselect=bovalist.begin();/// Need to keep at least one item in the list
-  */
-  // Create constant iterator for list.
-
-  // Iterate through list and output each element.
-  /*
-  for (iter=bovalist.begin(); iter != bovalist.end(); iter++)
-  {
-    (*iter).status(1);
-  }
-  */
-  
-  //  dographicsstuff();
   char windowtitle[]="Neuro robots";
 
-   glutMaster   = new GlutMaster();
+  GlutMaster * glutMaster   = new GlutMaster();
 
-   Window = new NRWindow(glutMaster,
+  NRWindow * Window = new NRWindow(glutMaster,
     		             viewwidth, viewheight,    // width, height
     		             10, 0,    // initPosition (x,y)
     		             windowtitle); // title

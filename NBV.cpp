@@ -2,7 +2,8 @@
 
 /// Write out the logs for all the vehicles to a matlab/octave file
 /// Candidate for a friend function to binoculus, writelog(name,var,lognum)
-void writevehiclelogs( std::string fname, char var, int lnum )
+void writevehiclelogs( std::list<Binoculus>& globalBvl,
+                       std::string fname, char var, int lnum )
 {
     std::list<Binoculus>::iterator iter;
 

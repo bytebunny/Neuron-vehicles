@@ -19,13 +19,11 @@ Contains, classess for things, eyes, and binoculus. Monoculus dropped for the mo
 #include "bvglobalini.h"
 #include "constants.hpp"
 #include "vehicle_types.hpp"
+#include "nrWindow.h"
 
 using std::cout;
 using std::endl;
- 
-class Binoculus; // needed for the list definition bvl
 extern int globalID;
-extern std::list<Binoculus> globalBvl;
 extern readinifile GS; //global singleton - initialised from a file.
 
 
@@ -343,7 +341,7 @@ public:
     A1inv=A;A1inv.inverse();
     ALeyeinv=lefteye.Aeye;ALeyeinv.inverse();
     AReyeinv=righteye.Aeye;AReyeinv.inverse();
-    for (itr=globalBvl.begin(); itr != globalBvl.end(); itr++) {/// Check against every other vehicle
+    for (itr=NRWindow::globalBvl.begin(); itr != NRWindow::globalBvl.end(); itr++) {/// Check against every other vehicle
       if((*itr).id !=id){// if not yourself
 	lightposns.addcolumn((*itr).getx(),(*itr).gety(),1.0);
 	lightcolours.push_back((*itr).colour());
@@ -492,6 +490,7 @@ public:
 };
 
 
-void writevehiclelogs( std::string fname, char var, int lnum );
+void writevehiclelogs( std::list<Binoculus>& globalBvl,
+                       std::string fname, char var, int lnum );
 
 #endif
