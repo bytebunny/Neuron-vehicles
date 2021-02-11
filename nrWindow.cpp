@@ -8,7 +8,7 @@
 #include "vehicle_types.hpp"
 #include "nrWindow.h"
 #include "bvglobalini.h"
-#include "NBV.h"
+#include "Binoculus.hpp"
 #include "glutMaster.h"
 
 using std::cout;

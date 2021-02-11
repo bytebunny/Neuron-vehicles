@@ -95,7 +95,7 @@ Learning/optimization
 #include <list>		// list class library
 #include "glutMaster.h"
 #include "coordmatrix.h"  // matricies for coordinate transforms and data logging
-#include "NBV.h"  // the vehicle class
+#include "Binoculus.hpp"  // the vehicle class
 #include "bvglobalini.h" // for initialising variables from bv.ini
 #include "nrWindow.h"
 
