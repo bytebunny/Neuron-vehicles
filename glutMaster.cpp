@@ -10,8 +10,8 @@
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-#include "glutMaster.h"
-#include "glutWindow.h"
+#include "glutMaster.hpp"
+#include "glutWindow.hpp"
                                                        
 GlutWindow * viewPorts[MAX_NUMBER_OF_WINDOWS]; 
 

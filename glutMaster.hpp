@@ -19,7 +19,7 @@
  #include <GL/glut.h>
 #endif
 
-#include "glutWindow.h"
+#include "glutWindow.hpp"
 
 #define MAX_NUMBER_OF_WINDOWS 256 
 

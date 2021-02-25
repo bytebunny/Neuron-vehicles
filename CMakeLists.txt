@@ -18,7 +18,16 @@ find_package( GLUT REQUIRED )
 add_executable( neuron_vehicles )
 
 target_sources( neuron_vehicles
-  PRIVATE brait032.cpp Binoculus.cpp nrWindow.cpp glutMaster.cpp glutWindow.cpp )
+  PRIVATE brait032.cpp
+  constants.hpp
+  vehicle_types.hpp
+  bvglobalini.hpp
+  Coordmatrix.hpp
+  NBV.hpp
+  Binoculus.hpp Binoculus.cpp
+  NRWindow.hpp NRWindow.cpp
+  glutMaster.hpp glutMaster.cpp
+  glutWindow.hpp glutWindow.cpp )
 
 target_include_directories( neuron_vehicles PRIVATE ${GLUT_INCLUDE_DIRS} )
 

@@ -6,10 +6,10 @@
 #include"config.hpp"
 #include "constants.hpp"
 #include "vehicle_types.hpp"
-#include "nrWindow.h"
-#include "bvglobalini.h"
+#include "NRWindow.hpp"
+#include "bvglobalini.hpp"
 #include "Binoculus.hpp"
-#include "glutMaster.h"
+#include "glutMaster.hpp"
 
 using std::cout;
 using std::endl;

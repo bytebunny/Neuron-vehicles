@@ -93,11 +93,11 @@ Learning/optimization
 #include <string>
 #include <iostream>
 #include <list>		// list class library
-#include "glutMaster.h"
-#include "coordmatrix.h"  // matricies for coordinate transforms and data logging
+#include "glutMaster.hpp"
+#include "Coordmatrix.hpp"  // matricies for coordinate transforms and data logging
 #include "Binoculus.hpp"  // the vehicle class
-#include "bvglobalini.h" // for initialising variables from bv.ini
-#include "nrWindow.h"
+#include "bvglobalini.hpp" // for initialising variables from bv.ini
+#include "NRWindow.hpp"
 
 using std::cout;
 using std::endl;
@@ -107,13 +107,6 @@ using std::iterator;
 using std::list;
 using std::ofstream;
 using std::string;
-
-void makeashyphobe();
-void makeanagressivephobe();
-void makeapredator();
-void makeaprey();
-void makeabrightprey();
-
 
 // --------------------Globals --------------
 //list<Binoculus> bvl;
@@ -127,91 +120,6 @@ int viewwidth=820;
 int viewheight=680;
 //bool movetoggle=false;
 
-//----------------------------------------------------------------------------
-
-
-//------------------------------------------------------------------------
-
-
-
-
-//----------------------------------------------------------------------------
-
-
-//-----------------------------------------------------------------------------
-
-
-/// Eulerstep. May need version for Monoculus, or a mechanism to allow integration of both 
-// Alternatively, we can move it back into the class and call with deltat
-void eulerstep(Binoculus &nbv){
-  //  float deltat=.01;
-  float deltat=GS.DeltaT;
-  //nbv.updatestate();
- 
-  for (int ii=0;ii<5;ii++){// integrate 5 states
-    nbv.x[ii]=nbv.x[ii]+nbv.dotx[ii]*deltat;
-  }
-  nbv.updateA();
-}
-
-/// World physics
-void boundaryfolding(Binoculus &nbv){
-
-  float rwall=GS.worldboundary;
-  float lwall=-GS.worldboundary;
-  float twall=GS.worldboundary;
-  float bwall=-GS.worldboundary;
-   
- //left wall
-  if (nbv.x[3]>rwall)
-    nbv.x[3]+=(lwall-rwall);
-  if (nbv.x[3]<lwall)
-    nbv.x[3]+=(rwall-lwall);
-  if (nbv.x[4]>twall)
-    nbv.x[4]+=(bwall-twall);
-  if (nbv.x[4]<bwall)
-    nbv.x[4]+=(twall-bwall);
-}
-void boundarycollisions(Binoculus &nbv){
-  /*  float rwall=1.7;
-  float lwall=-1.7;
-  float twall=1.7;
-  float bwall=-1.7;
-  */ 
-  float rwall=GS.worldboundary;
-  float lwall=-GS.worldboundary;
-  float twall=GS.worldboundary;
-  float bwall=-GS.worldboundary;
-   
- //left wall
-  if (nbv.x[3]>rwall && nbv.x[2] > -constants::pi/2 && nbv.x[2] < constants::pi/2){
-    nbv.x[2]=constants::pi-nbv.x[2];
-  }
-  //right wall
-  if (nbv.x[3]<lwall && (nbv.x[2] > constants::pi/2 || nbv.x[2] < -constants::pi/2)){
-    nbv.x[2]=constants::pi-nbv.x[2];
-  }
-
-  //top wall
-  if (nbv.x[4]>twall && nbv.x[2]>0 ){
-    nbv.x[2]=-nbv.x[2];
-  }
-  //bottom wall
-  if (nbv.x[4]<bwall && nbv.x[2]<0 ){
-    nbv.x[2]=-nbv.x[2];
-  }
-}
-
-
-void worldphysics(Binoculus &nbv){
-  if (GS.worldtype==1)// torus world
-    boundaryfolding(nbv);
-  else
-    boundarycollisions(nbv);
-}
-
-
-//---------------------------------------------------------------
 
 // Main function for the program
 int main(int argc, char *argv[])

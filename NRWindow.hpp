@@ -27,8 +27,8 @@
 
 #include <string>
 #include <list>
-#include "glutMaster.h"
-#include "glutWindow.h"
+#include "glutMaster.hpp"
+#include "glutWindow.hpp"
 
 class Binoculus;
 

@@ -15,8 +15,8 @@ Contains, classess for things, eyes, and binoculus. Monoculus dropped for the mo
 #include <sstream>
 #include <list>		// list class library
 #include <string>
-#include "coordmatrix.h"
-#include "bvglobalini.h"
+#include "Coordmatrix.hpp"
+#include "bvglobalini.hpp"
 #include "constants.hpp"
 #include "vehicle_types.hpp"
 

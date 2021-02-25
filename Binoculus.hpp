@@ -1,8 +1,8 @@
 #ifndef BINOCULUS_H
 #define BINOCULUS_H
 
-#include "NBV.h"
-#include "nrWindow.h"
+#include "NBV.hpp"
+#include "NRWindow.hpp"
 
 class Binoculus: public Thing{
   float x[76];/// States are    \[ speed, \dot\theta,\theta, x, y \]
@@ -30,7 +30,7 @@ public:
   inline float getturnrate(){return(x[1]);}
   inline float getEyeDiv(){return(lefteye.theta);}// candidate for removal
   inline void resetstates(){x[0]=x[1]=x[5]=0;dotx[0]=dotx[1]=dotx[2]=dotx[3]=dotx[4]=dotx[5]=0;}
-    inline int getid(){return(id);}
+  inline int getid(){return(id);}
   //  friend void printWidthand( Box & box );
   void updateA(){A.trans(x[2],x[3],x[4]);}
 
@@ -55,6 +55,11 @@ public:
   //----------------------------constructors-----------------
     Binoculus(const char * argname,float theta,float xx, float yy, int colour);
 };
+
+void eulerstep( Binoculus &nbv );
+void boundaryfolding( Binoculus &nbv );
+void boundarycollisions( Binoculus &nbv );
+void worldphysics( Binoculus &nbv );
 
 void writevehiclelogs( std::list<Binoculus>& globalBvl,
                        std::string fname, char var, int lnum );

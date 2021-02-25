@@ -10,7 +10,7 @@
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-#include "glutWindow.h"
+#include "glutWindow.hpp"
 
 GlutWindow::GlutWindow(void){
 
