@@ -7,7 +7,7 @@ endif()
 
 project( Neuron-vehicles VERSION 4.0 LANGUAGES CXX )
 
-configure_file( config.hpp.in config.hpp ) # puts config.h under ${CMAKE_CURRENT_BINARY_DIR}.
+configure_file( src/config.hpp.in config.hpp ) # puts config.hpp under ${CMAKE_CURRENT_BINARY_DIR}.
 include_directories(${CMAKE_CURRENT_BINARY_DIR}) # specify the output directory as an include directory.
 
 #------------------------------------ Dependencies ---------------------------------
@@ -18,18 +18,22 @@ find_package( GLUT REQUIRED )
 add_executable( neuron_vehicles )
 
 target_sources( neuron_vehicles
-  PRIVATE brait032.cpp
-  constants.hpp
-  vehicle_types.hpp
-  bvglobalini.hpp
-  Coordmatrix.hpp
-  NBV.hpp
-  Binoculus.hpp Binoculus.cpp
-  NRWindow.hpp NRWindow.cpp
-  glutMaster.hpp glutMaster.cpp
-  glutWindow.hpp glutWindow.cpp )
+  PRIVATE
+  src/brait032.cpp
+  src/constants.hpp
+  src/vehicle_types.hpp
+  src/bvglobalini.hpp
+  src/Coordmatrix.hpp
+  src/NBV.hpp
+  src/Binoculus.hpp src/Binoculus.cpp
+  src/NRWindow.hpp src/NRWindow.cpp
+  src/glutMaster.hpp src/glutMaster.cpp
+  src/glutWindow.hpp src/glutWindow.cpp )
 
-target_include_directories( neuron_vehicles PRIVATE ${GLUT_INCLUDE_DIRS} )
+target_include_directories( neuron_vehicles
+  PRIVATE
+  ${GLUT_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/src )
 
 target_link_libraries( neuron_vehicles PRIVATE ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
 
