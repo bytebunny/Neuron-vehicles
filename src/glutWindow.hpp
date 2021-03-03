@@ -14,10 +14,10 @@
 #ifndef __GLUT_WINDOW_H__
 #define __GLUT_WINDOW_H__
 
-class GlutWindow{
+class GlutWindow
+{
 protected:
-
-   int          windowID;
+    int windowID{};
 
 public:
 
