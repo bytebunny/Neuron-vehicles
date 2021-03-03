@@ -8,7 +8,9 @@
 # Arguments:
 # 1 -- name of the OS.
 
-set -ex # exit immediatly after command fails, add '+' in front of output.
+set -exv # exit immediatly after command fails,
+         # add '+' in front of output,
+         # print lines before executing them.
 
 VERSION=2.13.4
 

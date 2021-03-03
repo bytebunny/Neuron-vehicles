@@ -38,7 +38,7 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-  - ./install_catch2.sh ${TRAVIS_OS_NAME}
+  - ./scripts/install_catch2.sh ${TRAVIS_OS_NAME}
 
 script:
   - cmake -S. -Bbuild
