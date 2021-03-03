@@ -11,6 +11,7 @@
 !*.ini
 !*.txt
 !*.yml
+!*.sh
 
 # ...even if they are in subdirectories
 !*/

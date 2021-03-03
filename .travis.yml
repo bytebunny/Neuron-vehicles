@@ -9,41 +9,35 @@ matrix:
     - os: linux
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-11.0.1
+          sources: *all_sources
           packages:
-            - clang-11.0.1
+            - clang-9
             - cmake
-      env:
-        - MATRIX_EVAL="CC=clang-11.0 && CXX=clang++-11.0"
+      env: MATRIX_EVAL="CC=clang-9 && CXX=clang++-9"
 
     # linux + gcc
     - os: linux
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
+          sources: *all_sources
           packages:
             - g++-10
             - cmake
-      env:
-        - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
+      env: MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
 
     # osx + gcc
     - os: osx
       osx_image: xcode12.2 # macOS 10.15.7
-      env:
-        - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10" # prepend "brew install gcc@10" if it's not yet installed.
+      env: MATRIX_EVAL="CC=gcc-10 && CXX=g++-10" # prepend "brew install gcc@10" if it's not yet installed.
 
     # osx + clang
     - os: osx
       osx_image: xcode12.2 # macOS 10.15.7
-      env:
-        - MATRIX_EVAL="CC=clang && CXX=clang++"
+      env: MATRIX_EVAL="CC=clang && CXX=clang++"
 
 before_install:
     - eval "${MATRIX_EVAL}"
+    - ./install_catch2.sh
 
 script:
   - cmake -S. -Bbuild
