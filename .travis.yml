@@ -37,8 +37,8 @@ matrix:
       env: MATRIX_EVAL="CC=clang && CXX=clang++"
 
 before_install:
-    - eval "${MATRIX_EVAL}"
-    - ./install_catch2.sh
+  - eval "${MATRIX_EVAL}"
+  - ./install_catch2.sh ${TRAVIS_OS_NAME}
 
 script:
   - cmake -S. -Bbuild
