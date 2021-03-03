@@ -1,0 +1,44 @@
+language: cpp
+# compiler: # matrix expansion
+#   - clang
+#   - gcc # gcc is alias for clang on macOS.  
+
+matrix:
+  include:
+    # linux + clang
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-11.0.1
+          packages:
+            - clang-11.0.1
+      env:
+        - MATRIX_EVAL="CC=clang-11.0 && CXX=clang++-11.0"
+
+    # linux + gcc
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-10
+      env:
+        - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
+
+    # osx + gcc
+    - os: osx
+      osx_image: xcode12.2 # macOS 10.15.7
+      env:
+        - MATRIX_EVAL="brew install gcc@10 && CC=gcc-10 && CXX=g++-10"
+
+    # osx + clang
+    - os: osx
+      osx_image: xcode12.2 # macOS 10.15.7
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+
+before_install:
+    - eval "${MATRIX_EVAL}"

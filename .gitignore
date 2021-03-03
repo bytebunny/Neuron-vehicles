@@ -10,6 +10,7 @@
 !*.in
 !*.ini
 !*.txt
+!*.yml
 
 # ...even if they are in subdirectories
 !*/
