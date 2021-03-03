@@ -16,6 +16,4 @@ tar -xf v${VERSION}.tar.gz
 cd Catch2-${VERSION}/
 cmake -Bbuild -H. -DBUILD_TESTING=OFF
 
-# CMake bin is installed in a strange place where
-# sudo can not find by default.
-sudo env "PATH=$PATH" cmake --build build/ --target install
+cmake --build build/ --target install
