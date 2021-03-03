@@ -11,9 +11,9 @@ configure_file( src/config.hpp.in config.hpp ) # puts config.hpp under ${CMAKE_C
 include_directories(${CMAKE_CURRENT_BINARY_DIR}) # specify the output directory as an include directory.
 
 #------------------------------------ Dependencies ---------------------------------
-find_package( OpenGL REQUIRED COMPONENTS OpenGL
-  GLUT REQUIRED
-  Catch2 REQUIRED ) # for unit tests.
+find_package( OpenGL REQUIRED COMPONENTS OpenGL )
+find_package( GLUT REQUIRED )
+find_package( Catch2 REQUIRED ) # for unit tests.
 
 #------------------------------ Targets and Properties -----------------------------
 add_executable( neuron_vehicles.exe )
