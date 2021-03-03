@@ -1,7 +1,4 @@
 language: cpp
-# compiler: # matrix expansion
-#   - clang
-#   - gcc # gcc is alias for clang on macOS.  
 
 matrix:
   include:
@@ -12,7 +9,6 @@ matrix:
           sources: *all_sources
           packages:
             - clang-8
-            - libstdc++-8-dev
             - cmake
       env: MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
 
