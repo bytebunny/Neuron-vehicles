@@ -1,6 +1,9 @@
 # Neuron-vehicles
-Sensory motor simulation of neuron controlled wheeled vehicles
 
+[![Build Status](https://travis-ci.org/bytebunny/Neuron-vehicles.svg?branch=master)](https://travis-ci.org/bytebunny/Neuron-vehicles)
+![GitHub](https://img.shields.io/github/license/bytebunny/Neuron-vehicles)
+
+Sensory motor simulation of neuron controlled wheeled vehicles
 
 You are welcome to modify and use this code for non-commercial
 purposes providing you credit the origin (a web address is 
@@ -23,21 +26,34 @@ http://www.personal.reading.ac.uk/~shshawin/LN/braitenberg.html
 however these have had only very rudimentary testing.
 
 
-# Compiling
+## Compiling
 
-## Compiling under Linux/g++
+### Dependencies
 
-Program needs libglut3-dev
- sudo apt-get install freeglut3-dev
-This should also install opengl (mesa)
+- OpenGL
+- GCC or Clang C++ compiler
+- CMake
+- Catch2 (only if you plan to run unit tests)
 
-Compile with
+#### On Linux
 
-g++ brait032.cpp nrWindow.cpp glutMaster.cpp glutWindow.cpp  -L/usr/local/lib  -lglut -lGL -lGLU
+Program needs libglut3-dev `sudo apt-get install freeglut3-dev`.
+This should also install opengl (mesa).
 
- - <>http:braitenberg_v032.zip source code in a zip file<endu>
+#### On macOS
 
-** Compiling under Microsoft windows and VisualC++
+macOS ships with OpenGL.
+The rest of the dependencies can be obtained from a package manager, e.g. Homebrew: `brew install <package-name>`.
+
+### Building on Linux and macOS
+
+Run the following CMake commands to compile the release version of the project under `build` directory:
+```
+cmake -S. -Bbuild
+cmake --build build
+```
+
+### Compiling under Microsoft windows and VisualC++
 
 Microsoft windows supports openGL but you will need to also install
 GLUT or Freeglut. These provide glut.h, glut32.lib as well as the
@@ -57,7 +73,7 @@ There may be hints from
 http://web.eecs.umich.edu/~sugih/courses/eecs487/glut-howto/
 
 
-### header file:
+#### header file:
 
 Glut header files *.h will go in a directory GL 
 try
@@ -67,7 +83,7 @@ try
 The '*' matches your version of VS: 12.0 for VS2013, 11.0 for VS2012, 10.0 for VS2010, 9.0 for VS2008. You may have to create the include folder.
 
 
-### library file:
+#### library file:
 
 Library (*.lib) files will go somewhere like
 
@@ -80,25 +96,24 @@ C:\Program Files (x86)\Microsoft Visual Studio *\VC\lib\amd64\glut32.lib
 
 
 
-# Running under Linux
+## Running under Linux
 
 Should run from the command line or from a folder
 
-# Running under Windows
-
-
+## Running under Windows
 
 To run you will need the Glut32.dll (or the freeglut.dll) either in the same directory as 
 brait.exe or in the windows system directory.
 
 
-# Other operating systems, Mac OS, Android. iOS etc
+## Other operating systems, Mac OS, Android. iOS etc
+
 It is probably possible to compile binaries for Mac OS, but the mobiles is likely to 
 be more involved and the software is likely to need a redesign. I am happy to advise any
 adventurous individuals who wish to try.
 
 
-# User interface
+## User interface
 
 This is not a particularly friendly interface. This is a consequence of the decision so as to keep
 the code as simple as possible, and allow it to run on multiple
@@ -131,7 +146,7 @@ Once the speed is reasonable you can change 'MS' into 'SS' 'AS' 'SP'
 'AP' these always work on the selected object.  Add lights by moving
 the mouse to where you want the light to be and typing 'a'
 
-## Bugs/tips
+### Bugs/tips
 
 Having changed bv.ini and reloaded with 'l', you still need to reset a
 specific vehicle. Select that vehicle and type in the two letter
@@ -139,7 +154,7 @@ command for the new values to take effect. This is (probably) a minor
 and fixable bug if anyone wants to contribute code.
 
 
-## Uppercase two letter (mostly)  commands 
+### Uppercase two letter (mostly)  commands 
 % Can't use OXYZ
 
 Following commands are used to change the vehicles nature
@@ -158,7 +173,7 @@ Following commands are used to change the vehicles nature
  DUMP Dump a Matlab file
 
 
-## Lowercase (mostly) single letter commands
+### Lowercase (mostly) single letter commands
 A list of keyboard commands:
  - mouse dependent commands
    - a - add a B.V. at the mouse position
@@ -194,16 +209,16 @@ Menu commands: (Right mouse click)
   (was previously used to switch on lights, etc)
 
 
-# Tips
+## Tips
 
 In ground view (selected via the menu), lower the camera with Z/z to
 get the 'driver's' view.
 
-# Initialisation file
+## Initialisation file
 bv.ini is an editable file read in at the start and with the 'l' command.
 
 
-## bv.ini
+### bv.ini
 
 Setting values in bv.ini
 
