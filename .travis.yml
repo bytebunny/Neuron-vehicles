@@ -4,23 +4,25 @@ matrix:
   include:
     # linux + clang
     - os: linux
+      dist: focal # clang 7.0.0, cmake 3.16.8, gcc 9.3.0
       addons:
         apt:
-          sources: *all_sources
-          packages:
-            - clang-8
-            - cmake
-      env: MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
+          sources: ppa:chris-lea/redis-server
+          # packages:
+          #   - clang-8
+          #   - cmake
+      env: MATRIX_EVAL="CC=clang && CXX=clang++"
 
     # linux + gcc
     - os: linux
+      dist: focal # clang 7.0.0, cmake 3.16.8, gcc 9.3.0
       addons:
         apt:
-          sources: *all_sources
-          packages:
-            - gcc-10
-            - cmake
-      env: MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
+          sources: ppa:chris-lea/redis-server
+          # packages:
+          #   - g++-9
+          #   - cmake
+      env: MATRIX_EVAL="CC=gcc && CXX=g++"
 
     # osx + gcc
     - os: osx

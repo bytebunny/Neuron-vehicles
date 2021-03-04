@@ -18,6 +18,9 @@ TRAVIS_OS_NAME=$1
 # Install Catch2 from sources
 if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
     wget https://github.com/catchorg/Catch2/archive/v${VERSION}.tar.gz
+    # CMake bin is installed in a strange place where
+    # sudo can not find by default.
+    sudo env "PATH=$PATH"
 elif [[ ${TRAVIS_OS_NAME} == "osx" ]]; then
     curl -L -O https://github.com/catchorg/Catch2/archive/v${VERSION}.tar.gz
 fi
