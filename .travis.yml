@@ -12,8 +12,8 @@ matrix:
             - freeglut3-dev mesa-utils # OpenGL
       #env: MATRIX_EVAL="CC=gcc && CXX=g++"
       compiler:
-        - gcc
-        - clang
+      - gcc
+      - clang
     
     # osx + gcc
     - os: osx
