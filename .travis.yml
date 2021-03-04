@@ -21,7 +21,6 @@ matrix:
           sources: ppa:chris-lea/redis-server
           packages:
             - freeglut3-dev
-            - binutils-gold g++ cmakelibglew-dev g++ mesa-common-dev build-essential libglew1.5-dev libglm-dev
             - mesa-utils
       env: MATRIX_EVAL="CC=gcc && CXX=g++"
 
