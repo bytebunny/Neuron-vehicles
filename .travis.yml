@@ -1,12 +1,8 @@
 language: cpp
 
-compiler: # matrix expansion
-  - gcc
-  - clang
-
 matrix:
   include:
-    # linux
+    # linux + gcc
     - os: linux
       dist: focal # clang 7.0.0, cmake 3.16.8, gcc 9.3.0
       addons:
@@ -14,7 +10,17 @@ matrix:
           sources: ppa:chris-lea/redis-server
           packages:
             - freeglut3-dev mesa-utils # OpenGL
-      #env: MATRIX_EVAL="CC=gcc && CXX=g++"
+      env: MATRIX_EVAL="CC=gcc && CXX=g++"
+
+    # linux + clang
+    - os: linux
+      dist: focal # clang 7.0.0, cmake 3.16.8, gcc 9.3.0
+      addons:
+        apt:
+          sources: ppa:chris-lea/redis-server
+          packages:
+            - freeglut3-dev mesa-utils # OpenGL
+      env: MATRIX_EVAL="CC=clang && CXX=clang++"
     
     # osx + gcc
     - os: osx
@@ -29,10 +35,7 @@ matrix:
 before_install:
   - eval "${MATRIX_EVAL}"
   - ./scripts/install_catch2.sh ${TRAVIS_OS_NAME}
-  # - if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-  #       ./scripts/install_openGL.sh
-  #   fi
-
+  
 script:
   - cmake -S. -Bbuild
   - cmake --build build
