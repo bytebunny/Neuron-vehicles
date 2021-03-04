@@ -8,9 +8,8 @@
 # Arguments:
 # 1 -- name of the OS.
 
-set -exv # exit immediatly after command fails,
-         # add '+' in front of output,
-         # print lines before executing them.
+set -ev # exit immediatly after command fails,
+        # print lines before executing them.
 
 VERSION=2.13.4
 
@@ -24,6 +23,8 @@ fi
 
 tar -xf v${VERSION}.tar.gz
 cd Catch2-${VERSION}/
-cmake -Bbuild -H. -DBUILD_TESTING=OFF
 
-sudo cmake --build build/ --target install
+cmake -Bbuild -H. -DBUILD_TESTING=OFF
+#cmake --build build/ --target install
+cd build/
+sudo make install
