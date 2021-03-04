@@ -19,9 +19,10 @@ matrix:
       addons:
         apt:
           sources: ppa:chris-lea/redis-server
-          # packages:
-          #   - g++-9
-          #   - cmake
+          packages:
+            - freeglut3-dev
+            - binutils-gold g++ cmakelibglew-dev g++ mesa-common-dev build-essential libglew1.5-dev libglm-dev
+            - mesa-utils
       env: MATRIX_EVAL="CC=gcc && CXX=g++"
 
     # osx + gcc
@@ -37,6 +38,9 @@ matrix:
 before_install:
   - eval "${MATRIX_EVAL}"
   - ./scripts/install_catch2.sh ${TRAVIS_OS_NAME}
+  # - if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
+  #       ./scripts/install_openGL.sh
+  #   fi
 
 script:
   - cmake -S. -Bbuild
