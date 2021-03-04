@@ -2,28 +2,19 @@ language: cpp
 
 matrix:
   include:
-    # linux + clang
-    - os: linux
-      dist: focal # clang 7.0.0, cmake 3.16.8, gcc 9.3.0
-      addons:
-        apt:
-          sources: ppa:chris-lea/redis-server
-          # packages:
-          #   - clang-8
-          #   - cmake
-      env: MATRIX_EVAL="CC=clang && CXX=clang++"
-
-    # linux + gcc
+    # linux
     - os: linux
       dist: focal # clang 7.0.0, cmake 3.16.8, gcc 9.3.0
       addons:
         apt:
           sources: ppa:chris-lea/redis-server
           packages:
-            - freeglut3-dev
-            - mesa-utils
-      env: MATRIX_EVAL="CC=gcc && CXX=g++"
-
+            - freeglut3-dev mesa-utils # OpenGL
+      #env: MATRIX_EVAL="CC=gcc && CXX=g++"
+      compiler:
+        - gcc
+        - clang
+    
     # osx + gcc
     - os: osx
       osx_image: xcode12.2 # macOS 10.15.7
